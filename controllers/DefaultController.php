@@ -10,7 +10,7 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
-use yuncms\comment\models\CommentForm;
+use yuncms\comment\models\Comment;
 
 /**
  * Class DefaultController
@@ -39,10 +39,16 @@ class DefaultController extends Controller
 
     public function actionCreate()
     {
-        $model = new CommentForm();
+        $model = new Comment();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+
             Yii::$app->session->setFlash(Yii::t('comment', 'Comment finish.'));
             //return $this->goBack();
+        } else {
+            print_r($model);
+
+            exit;
         }
         return $this->render('create', ['model' => $model]);
     }
