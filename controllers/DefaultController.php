@@ -42,7 +42,7 @@ class DefaultController extends Controller
         $model = new CommentForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash(Yii::t('comment', 'Comment finish.'));
-            return $this->goBack();
+            //return $this->goBack();
         }
         return $this->render('create', ['model' => $model]);
     }
