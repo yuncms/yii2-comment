@@ -16,10 +16,10 @@ class M161114065507Create_comment_table extends Migration
         $this->createTable('{{%comment}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
-            'content' => $this->text()->notNull(),
             'source_id' => $this->integer()->notNull(),
             'source_type'=> $this->string()->notNull(),
             'to_user_id' => $this->integer()->defaultValue(null),
+            'content' => $this->text()->notNull(),
             'status' => $this->boolean()->notNull()->defaultValue(false),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
