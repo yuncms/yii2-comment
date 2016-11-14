@@ -8,7 +8,7 @@ namespace yuncms\comment\widgets;
 
 use yii\base\Widget;
 use yii\base\InvalidConfigException;
-use yuncms\comment\models\CommentForm;
+use yuncms\comment\models\Comment as CommentForm;
 
 /**
  * Class Comment

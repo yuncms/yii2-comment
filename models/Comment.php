@@ -9,7 +9,6 @@ namespace yuncms\comment\models;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\Markdown;
 use yii\helpers\HtmlPurifier;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\AttributeBehavior;
@@ -127,7 +126,7 @@ class Comment extends ActiveRecord
     public function validateContent($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $model = static::findOne(['user_id' => $this->user_id, 'source_id' => $this->source_id]);
+            $model = static::findOne(['user_id' => $this->user_id]);
             if ($model) {
                 //一分钟内多次提交
                 if ((time() - $model->created_at) < 65) {
