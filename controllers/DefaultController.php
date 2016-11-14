@@ -41,10 +41,8 @@ class DefaultController extends Controller
     {
         $model = new Comment();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-
             Yii::$app->session->setFlash(Yii::t('comment', 'Comment finish.'));
-            //return $this->goBack();
+            return $this->goBack();
         } else {
             print_r($model);
 
