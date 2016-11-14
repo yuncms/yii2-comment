@@ -7,6 +7,7 @@
 namespace yuncms\comment\widgets;
 
 use yii\base\Widget;
+use yii\helpers\Url;
 use yii\base\InvalidConfigException;
 use yuncms\comment\models\Comment as CommentForm;
 
@@ -39,6 +40,7 @@ class Comment extends Widget
         if (empty ($this->source_id)) {
             throw new InvalidConfigException ('The "source_id" property must be set.');
         }
+        Url::remember('', 'actions-redirect');
     }
 
     /** @inheritdoc */

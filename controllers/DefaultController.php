@@ -7,6 +7,7 @@
 namespace yuncms\comment\controllers;
 
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
@@ -42,7 +43,7 @@ class DefaultController extends Controller
         $model = new Comment();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash(Yii::t('comment', 'Comment finish.'));
-            return $this->goBack();
+            return $this->goBack(Url::previous('actions-redirect'));
         }
         return $this->render('create', ['model' => $model]);
     }
