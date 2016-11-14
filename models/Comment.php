@@ -22,6 +22,7 @@ use yii\behaviors\AttributeBehavior;
  * @property string $source_type
  * @property integer $source_id
  * @property string $content
+ * @property int|null $to_user_id
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -76,13 +77,10 @@ class Comment extends ActiveRecord
         return [
             [[ 'source_id', 'source_type','content'], 'required'],
             [['source_type','content'], 'filter', 'filter' => 'trim'],
-            ['content', 'validateContent'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]]
         ];
     }
-
-    
 
     /**
      * @inheritdoc
