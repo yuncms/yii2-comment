@@ -9,7 +9,7 @@ namespace yuncms\comment\widgets;
 use yii\base\Widget;
 use yii\helpers\Url;
 use yii\base\InvalidConfigException;
-use yuncms\comment\models\Comment as CommentForm;
+use yuncms\comment\models\CommentForm;
 
 /**
  * Class Comment
