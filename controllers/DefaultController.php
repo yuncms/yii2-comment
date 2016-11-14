@@ -8,7 +8,9 @@ namespace yuncms\comment\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
+use yuncms\comment\models\CommentForm;
 
 /**
  * Class DefaultController
@@ -16,25 +18,32 @@ use yii\web\NotFoundHttpException;
  */
 class DefaultController extends Controller
 {
-    public function actionComment(){
-        $sourceType = Yii::$app->request->post('sourceType');
-        $sourceId = Yii::$app->request->post('sourceId');
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['@']
+                    ],
+                ],
+            ],
+        ];
+    }
 
-        $source = null;
-        if ($sourceType == 'question') {
-            $source = Question::findOne($sourceId);
-            $subject = $source->title;
-        } else if ($sourceType == 'user') {
-            $userClass = Yii::$app->user->identityClass;
-            $source = $userClass::find()->with('userData')->where(['id'=>$sourceId])->one();
-            $subject = $source->username;
-        } else if ($sourceType == 'code') {
-            $source = Code::findOne($sourceId);
-            $subject = $source->title;
+    public function actionCreate()
+    {
+        $model = new CommentForm();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash(Yii::t('comment', 'Comment finish.'));
+            return $this->goBack();
         }
-        if (!$source) {
-            throw new NotFoundHttpException ();
-        }
-
+        return $this->render('create', ['model' => $model]);
     }
 }

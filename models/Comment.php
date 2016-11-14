@@ -53,10 +53,19 @@ class Comment extends ActiveRecord
                     ActiveRecord::EVENT_AFTER_FIND => 'content'
                 ],
                 'value' => function ($event) {
-                    return HtmlPurifier::process(Markdown::process($event->sender->content, 'gfm'));
+                    return HtmlPurifier::process($event->sender->content);
                 }
             ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     * @return CommentQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new CommentQuery(get_called_class());
     }
 
     /**
@@ -65,11 +74,11 @@ class Comment extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'source_id', 'source_type','content'], 'required'],
-            ['source_type', 'filter', 'filter' => 'trim'],
+            [[ 'source_id', 'source_type','content'], 'required'],
+            [['source_type','content'], 'filter', 'filter' => 'trim'],
+            ['content', 'validateContent'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]]
-
         ];
     }
 
@@ -82,16 +91,16 @@ class Comment extends ActiveRecord
     public function validateContent($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $comment = static::findOne(['user_id' => $this->user_id, 'relationship_id' => $this->relationship_id]);
+            $comment = static::findOne(['user_id' => $this->user_id, 'source_id' => $this->source_id]);
             if ($comment) {
                 //一分钟内多次提交
                 if ((time() - $comment->created_at) < 65) {
-                    $this->addError($attribute, Yii::t('app', 'One minute only comment once.'));
+                    $this->addError($attribute, Yii::t('comment', 'One minute only comment once.'));
                 }
                 //计算相似度
                 $similar = similar_text($comment->content, $this->content);
                 if ($similar > 50) {
-                    $this->addError($attribute, Yii::t('app', 'You can not submit the same comment.'));
+                    $this->addError($attribute, Yii::t('comment', 'You can not submit the same comment.'));
                 }
             }
         }
@@ -115,5 +124,18 @@ class Comment extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'user_id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            if($this->user_id == null){
+                $this->user_id = Yii::$app->user->id;
+            }
+        }
+        parent::beforeSave($insert);
     }
 }
