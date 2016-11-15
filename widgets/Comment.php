@@ -27,6 +27,8 @@ class Comment extends Widget
      */
     public $source_id;
 
+    public $hide_cancel = false;
+
     /** @var bool */
     public $validate = true;
 
@@ -54,6 +56,7 @@ class Comment extends Widget
             'model' => $model,
             'source_type' => $this->source_type,
             'source_id' => $this->source_id,
+            'hide_cancel' => $this->hide_cancel,
         ]);
     }
 }
