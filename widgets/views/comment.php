@@ -2,7 +2,6 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 ?>
 <div class="collapse widget-comments mb-20" id="comments-<?= $source_type ?>-<?= $source_id ?>"
      data-source_type="<?= $source_type ?>" data-source_id="<?= $source_type ?>">
@@ -32,7 +31,7 @@ use yii\widgets\ActiveForm;
     <?php else: ?>
         <div class="widget-comment-form row">
             <div class="col-md-12">
-                请先 <a href="{{ route('auth.user.login') }}">登录</a> 后评论
+                请先 <a href="<?=Url::to(['/user/security/login'])?>">登录</a> 后评论
             </div>
         </div>
     <?php endif ?>

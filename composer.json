@@ -9,7 +9,7 @@
   "license": "BSD-3-Clause",
   "require": {
     "yiisoft/yii2": "~2.0.0",
-    "creocoder/yii2-flysystem": "0.8.*"
+    "yuncms/yii2-user": ">=1.1.5"
   },
   "autoload": {
     "psr-4": {
