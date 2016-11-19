@@ -10,6 +10,10 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
+use yuncms\comment\models\Comment;
 use yuncms\comment\models\CommentForm;
 
 /**
@@ -29,7 +33,12 @@ class DefaultController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create'],
+                        'actions' => ['list', 'store'],
+                        'roles' => ['@', '?']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['store'],
                         'roles' => ['@']
                     ],
                 ],
@@ -37,13 +46,93 @@ class DefaultController extends Controller
         ];
     }
 
-    public function actionCreate()
+    /**
+     * ajax加载评论
+     * @param string $sourceType
+     * @param int $sourceId
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionList($sourceType, $sourceId)
     {
-        $model = new CommentForm();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash(Yii::t('comment', 'Comment finish.'));
-            return $this->goBack(Url::previous('actions-redirect'));
+        $source = null;
+        if ($sourceType == 'question' && Yii::$app->hasModule('question')) {
+            $source = \yuncms\question\models\Question::findOne($sourceId);
+        } else if ($sourceType === 'answer' && Yii::$app->hasModule('question')) {
+            $source = \yuncms\question\models\Answer::findOne($sourceId);
+        } else if ($sourceType == 'article' && Yii::$app->hasModule('article')) {
+            $source = \yuncms\article\models\Article::findOne($sourceId);
+        }//etc..
+
+        if (!$source) {
+            throw new NotFoundHttpException ();
         }
-        return $this->render('create', ['model' => $model]);
+
+        $query = Comment::find()->where([
+            'source_id' => $sourceId,
+            'source_type' => get_class($source),
+        ])->with('user');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $this->renderPartial('list', ['dataProvider' => $dataProvider]);
+    }
+
+    /**
+     * 评论保存
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionStore()
+    {
+        $sourceType = Yii::$app->request->post('sourceType');
+        $sourceId = Yii::$app->request->post('sourceId');
+        /** @var null|\yii\db\ActiveRecord $source */
+        $source = null;
+        if ($sourceType == 'question' && Yii::$app->hasModule('question')) {
+            $source = \yuncms\question\models\Question::findOne($sourceId);
+            $notify_subject = $source->title;
+            $notify_type = 'comment_question';
+            $notify_refer_type = 'question';
+            $notify_refer_id = 0;
+        } else if ($sourceType === 'answer' && Yii::$app->hasModule('question')) {
+            $source = \yuncms\question\models\Answer::findOne($sourceId);
+            $notify_subject = $source->question->title;
+            $notify_type = 'comment_answer';
+            $notify_refer_type = 'answer';
+            $notify_refer_id = $source->question_id;
+        } else if ($sourceType == 'article' && Yii::$app->hasModule('article')) {
+            $source = \yuncms\article\models\Article::findOne($sourceId);
+            $subject = $source->title;
+            $notify_type = 'comment_article';
+            $notify_refer_type = 'article';
+            $notify_refer_id = 0;
+        }//etc..
+
+        if (!$source) {
+            throw new NotFoundHttpException ();
+        }
+
+        $data = [
+            'user_id' => Yii::$app->user->id,
+            'source_id' => $sourceId,
+            'source_type' => get_class($source),
+            'content' => Yii::$app->request->post('content'),
+            'to_user_id' => Yii::$app->request->post('to_user_id'),
+        ];
+        $model = new Comment($data);
+        if ($model->save()) {
+            /*问题、回答、文章评论数+1*/
+            $source->updateCounters(['comments' => 1]);
+            if ($comment->to_user_id > 0) {
+                Yii::$app->getModule('user')->notify(Yii::$app->user->id, $model->to_user_id, 'reply_comment', $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
+            } else {
+                Yii::$app->getModule('user')->notify(Yii::$app->user->id, $source->user_id, $notify_type, $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
+            }
+            return $this->renderPartial('detail', ['model' => $model, 'source_type' => $source_type, 'source_id' => $source_id]);
+        } else {
+            throw new ForbiddenHttpException($model->getFirstError());
+        }
     }
 }

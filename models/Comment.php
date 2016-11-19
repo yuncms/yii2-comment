@@ -117,6 +117,9 @@ class Comment extends ActiveRecord
         return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'user_id']);
     }
 
+    public function getToUser(){
+        return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'to_user_id']);
+    }
     /**
      * 验证评论内容
      *
@@ -129,7 +132,7 @@ class Comment extends ActiveRecord
             $model = static::findOne(['user_id' => $this->user_id]);
             if ($model) {
                 //一分钟内多次提交
-                if ((time() - $model->created_at) < 65) {
+                if ((time() - $model->created_at) < 60) {
                     $this->addError($attribute, Yii::t('comment', 'One minute only comment once.'));
                 }
                 //计算相似度
