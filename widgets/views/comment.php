@@ -9,8 +9,6 @@ CommentAsset::register($this);
 <div class="collapse widget-comments mb-20" id="comments-<?= $source_type ?>-<?= $source_id ?>"
      data-source_type="<?= $source_type ?>" data-source_id="<?= $source_id ?>">
     <div class="widget-comment-list">
-        <!-- 这里是列表 -->
-
     </div>
     <?php if (!Yii::$app->user->isGuest): ?>
         <div class="widget-comment-form row">
