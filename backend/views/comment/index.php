@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs("jQuery(\"#batch_deletion\").on(\"click\", function () {
     yii.confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "',function(){
         var ids = jQuery('#gridview').yiiGridView(\"getSelectedRows\");
-        jQuery.post(\"" . Url::to(['/comment/comment/batch-delete']) . "\",{ids:ids});
+        jQuery.post(\"/comment/comment/batch-delete\",{ids:ids});
     });
 });", View::POS_LOAD);
 ?>
