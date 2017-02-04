@@ -22,6 +22,6 @@ return [
     'Status' => '状态',
     'Submit Comment' => '提交评论',
     'You can not submit the same comment.' => '请不要重复提交',
-    'source Id' => '',
-    'source Type' => '',
+    'source Id' => '源ID',
+    'source Type' => '源模型',
 ];

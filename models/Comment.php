@@ -9,8 +9,8 @@ namespace yuncms\comment\models;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
 use yii\helpers\HtmlPurifier;
-use yii\behaviors\TimestampBehavior;
 use yii\behaviors\AttributeBehavior;
 
 /**
@@ -24,7 +24,6 @@ use yii\behaviors\AttributeBehavior;
  * @property int|null $to_user_id
  * @property integer $status
  * @property integer $created_at
- * @property integer $updated_at
  */
 class Comment extends ActiveRecord
 {
@@ -33,12 +32,6 @@ class Comment extends ActiveRecord
 
     //正常
     const STATUS_ACCEPTED = 1;
-
-    //拒绝
-    const STATUS_REJECTED = 2;
-
-    //删除
-    const STATUS_DELETED = 3;
 
     /**
      * @inheritdoc
@@ -63,7 +56,12 @@ class Comment extends ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes'=>[
+                    BaseActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+            ],
             [
                 'class' => AttributeBehavior::className(),
                 'attributes' => [
@@ -89,8 +87,6 @@ class Comment extends ActiveRecord
             ['status', 'in', 'range' => [
                 self::STATUS_PENDING,
                 self::STATUS_ACCEPTED,
-                self::STATUS_REJECTED,
-                self::STATUS_DELETED,
             ]]
         ];
     }
@@ -102,11 +98,32 @@ class Comment extends ActiveRecord
     {
         return [
             'content' => Yii::t('comment', 'Content'),
+            'parent' => Yii::t('comment', 'Parent Content'),
             'source_type' => Yii::t('comment', 'source Type'),
             'source_id' => Yii::t('comment', 'source Id'),
             'status' => Yii::t('comment', 'Status'),
+            'created_at' => Yii::t('comment', 'Created At'),
         ];
     }
+
+    public function isPending()
+    {
+        return $this->status == static::STATUS_PENDING;
+    }
+
+    public function isAccepted()
+    {
+        return $this->status == static::STATUS_ACCEPTED;
+    }
+
+    /**
+     * 设置评论为已审核
+     */
+    public function confirm()
+    {
+        return (bool)$this->updateAttributes(['status' => static::STATUS_ACCEPTED]);
+    }
+
 
     /**
      * 获取用户
@@ -117,9 +134,11 @@ class Comment extends ActiveRecord
         return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'user_id']);
     }
 
-    public function getToUser(){
+    public function getToUser()
+    {
         return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'to_user_id']);
     }
+
     /**
      * 验证评论内容
      *

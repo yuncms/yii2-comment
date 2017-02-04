@@ -5,7 +5,7 @@ use yuncms\admin\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model yuncms\comment\models\CommentSearch */
-/* @var $form backend\widgets\ActiveForm */
+/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="comment-search">

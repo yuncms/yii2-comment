@@ -22,7 +22,6 @@ class M161114065507Create_comment_table extends Migration
             'content' => $this->text()->notNull(),
             'status' => $this->boolean()->notNull()->defaultValue(false),
             'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
         $this->addForeignKey('comment_ibfk_1', '{{%comment}}', 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
     }
