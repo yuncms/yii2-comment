@@ -82,6 +82,7 @@ class DefaultController extends Controller
     /**
      * 评论保存
      * @return string
+     * @throws ForbiddenHttpException
      * @throws NotFoundHttpException
      */
     public function actionStore()
@@ -104,7 +105,7 @@ class DefaultController extends Controller
             $notify_refer_id = $source->question_id;
         } else if ($sourceType == 'article' && Yii::$app->hasModule('article')) {
             $source = \yuncms\article\models\Article::findOne($sourceId);
-            $subject = $source->title;
+            $notify_subject = $source->title;
             $notify_type = 'comment_article';
             $notify_refer_type = 'article';
             $notify_refer_id = 0;
@@ -125,12 +126,12 @@ class DefaultController extends Controller
         if ($model->save()) {
             /*问题、回答、文章评论数+1*/
             $source->updateCounters(['comments' => 1]);
-            if ($comment->to_user_id > 0) {
+            if ($model->to_user_id > 0) {
                 Yii::$app->getModule('user')->notify(Yii::$app->user->id, $model->to_user_id, 'reply_comment', $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
             } else {
                 Yii::$app->getModule('user')->notify(Yii::$app->user->id, $source->user_id, $notify_type, $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
             }
-            return $this->renderPartial('detail', ['model' => $model, 'source_type' => $source_type, 'source_id' => $source_id]);
+            return $this->renderPartial('detail', ['model' => $model, 'source_type' => $sourceType, 'source_id' => $sourceId]);
         } else {
             throw new ForbiddenHttpException($model->getFirstError());
         }
