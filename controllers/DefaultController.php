@@ -108,7 +108,7 @@ class DefaultController extends Controller
             $notify_subject = $source->title;
             $notify_type = 'comment_article';
             $notify_refer_type = 'article';
-            $notify_refer_id = 0;
+            $notify_refer_id = $source->id;
         }//etc..
 
         if (!$source) {
