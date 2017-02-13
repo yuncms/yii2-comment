@@ -17,6 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Accepted' => '通过',
+    'Are you sure you want to Accepted this comment?' => '你确定要接受该评论？',
+    'Batch Deletion' => '批量删除',
+    'Comment has been confirmed' => '评论已审核',
+    'Created At' => '创建时间',
+    'Manage Comment' => '评论管理',
+    'Parent Content' => '父评论',
+    'Pending' => '待审',
     'Content' => '内容',
     'One minute only comment once.' => '一分钟内只能评论一次',
     'Status' => '状态',
