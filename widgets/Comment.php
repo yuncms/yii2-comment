@@ -57,6 +57,9 @@ class Comment extends Widget
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'en-US',
                 'basePath' => __DIR__ . '/messages',
+                'fileMap' => [
+                    'widgets/comment/comment' => 'comment.php',
+                ],
             ];
         }
     }
