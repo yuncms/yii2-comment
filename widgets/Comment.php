@@ -6,6 +6,7 @@
  */
 namespace yuncms\comment\widgets;
 
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
 use yii\base\InvalidConfigException;
@@ -43,6 +44,9 @@ class Comment extends Widget
             throw new InvalidConfigException ('The "source_id" property must be set.');
         }
         Url::remember('', 'actions-redirect');
+        if (Yii::$app->hasModule('comment') && !isset(Yii::$app->i18n->translations['comment*'])) {
+            Yii::$app->getModule('comment');
+        }
     }
 
     /** @inheritdoc */
