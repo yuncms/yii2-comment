@@ -2,9 +2,12 @@
 use yii\web\View;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yuncms\admin\widgets\Jarvis;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use xutl\inspinia\Box;
+use xutl\inspinia\Toolbar;
+use xutl\inspinia\Alert;
+
 /* @var $this yii\web\View */
 /* @var $searchModel yuncms\comment\models\CommentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,38 +15,43 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('comment', 'Manage Comment');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs("jQuery(\"#batch_deletion\").on(\"click\", function () {
-    yii.confirm('".Yii::t('app', 'Are you sure you want to delete this item?')."',function(){
+    yii.confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "',function(){
         var ids = jQuery('#gridview').yiiGridView(\"getSelectedRows\");
         jQuery.post(\"/comment/comment/batch-delete\",{ids:ids});
     });
 });", View::POS_LOAD);
 ?>
-<section id="widget-grid">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 comment-index">
-            <?php Pjax::begin(); ?>                
-            <?php Jarvis::begin([
-                'noPadding' => true,
-                'editbutton' => false,
-                'deletebutton' => false,
+        <div class="col-lg-12 comment-index">
+            <?= Alert::widget() ?>
+            <?php Pjax::begin(); ?>
+            <?php Box::begin([
                 'header' => Html::encode($this->title),
-                'bodyToolbarActions' => [
-                    [
-                        'label' => Yii::t('comment', 'Manage Comment'),
-                        'url' => ['/comment/comment/index'],
-                    ],
-                    [
-                        'options' => ['id' => 'batch_deletion','class'=>'btn btn-sm btn-danger'],
-                        'label' => Yii::t('comment', 'Batch Deletion'),
-                        'url' => 'javascript:void(0);',
-                    ]
-                ]
             ]); ?>
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <div class="row">
+                <div class="col-sm-4 m-b-xs">
+                    <?= Toolbar::widget(['items' => [
+                        [
+                            'label' => Yii::t('comment', 'Manage Comment'),
+                            'url' => ['/comment/comment/index'],
+                        ],
+                        [
+                            'options' => ['id' => 'batch_deletion', 'class' => 'btn btn-sm btn-danger'],
+                            'label' => Yii::t('comment', 'Batch Deletion'),
+                            'url' => 'javascript:void(0);',
+                        ]
+                    ]]); ?>
+                </div>
+                <div class="col-sm-8 m-b-xs">
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
+            </div>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'options' => ['id' => 'gridview'],
-                'filterModel' => $searchModel,
+                'layout' => "{items}\n{summary}\n{pager}",
+                //'filterModel' => $searchModel,
                 'columns' => [
                     [
                         'class' => 'yii\grid\CheckboxColumn',
@@ -85,8 +93,8 @@ $this->registerJs("jQuery(\"#batch_deletion\").on(\"click\", function () {
                     ],
                 ],
             ]); ?>
-            <?php Jarvis::end(); ?>
+            <?php Box::end(); ?>
             <?php Pjax::end(); ?>
-        </article>
+        </div>
     </div>
-</section>
+</div>

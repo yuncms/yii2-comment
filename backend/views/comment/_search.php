@@ -1,29 +1,50 @@
 <?php
 
 use yii\helpers\Html;
-use yuncms\admin\widgets\ActiveForm;
+use xutl\inspinia\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model yuncms\comment\models\CommentSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="comment-search">
+<div class="comment-search pull-right">
 
     <?php $form = ActiveForm::begin([
+        'layout' => 'inline',
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id', [
+        'inputOptions' => [
+            'placeholder' => $model->getAttributeLabel('id'),
+        ],
+    ]) ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?= $form->field($model, 'user_id', [
+        'inputOptions' => [
+            'placeholder' => $model->getAttributeLabel('user_id'),
+        ],
+    ]) ?>
 
-    <?= $form->field($model, 'source_id') ?>
+    <?= $form->field($model, 'source_id', [
+        'inputOptions' => [
+            'placeholder' => $model->getAttributeLabel('source_id'),
+        ],
+    ]) ?>
 
-    <?= $form->field($model, 'source_type') ?>
-
-    <?= $form->field($model, 'parent') ?>
+<!--    --><?//= $form->field($model, 'source_type', [
+//        'inputOptions' => [
+//            'placeholder' => $model->getAttributeLabel('source_type'),
+//        ],
+//    ]) ?>
+<!---->
+<!--    --><?//= $form->field($model, 'parent', [
+//        'inputOptions' => [
+//            'placeholder' => $model->getAttributeLabel('parent'),
+//        ],
+//    ]) ?>
 
     <?php // echo $form->field($model, 'content') ?>
 
