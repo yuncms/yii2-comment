@@ -34,17 +34,17 @@ use xutl\inspinia\ActiveForm;
         ],
     ]) ?>
 
-<!--    --><?//= $form->field($model, 'source_type', [
-//        'inputOptions' => [
-//            'placeholder' => $model->getAttributeLabel('source_type'),
-//        ],
-//    ]) ?>
-<!---->
-<!--    --><?//= $form->field($model, 'parent', [
-//        'inputOptions' => [
-//            'placeholder' => $model->getAttributeLabel('parent'),
-//        ],
-//    ]) ?>
+    <?php /** echo  $form->field($model, 'source_type', [
+        'inputOptions' => [
+            'placeholder' => $model->getAttributeLabel('source_type'),
+        ],
+    ])**/ ?>
+
+    <?php /** echo $form->field($model, 'parent', [
+        'inputOptions' => [
+            'placeholder' => $model->getAttributeLabel('parent'),
+        ],
+    ]) **/ ?>
 
     <?php // echo $form->field($model, 'content') ?>
 
