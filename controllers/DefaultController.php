@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2012 TintSoft Technology Co. Ltd.
  * @license http://www.tintsoft.com/license/
  */
+
 namespace yuncms\comment\controllers;
 
 use Yii;
@@ -62,6 +63,8 @@ class DefaultController extends Controller
             $source = \yuncms\question\models\Answer::findOne($sourceId);
         } else if ($sourceType == 'article' && Yii::$app->hasModule('article')) {
             $source = \yuncms\article\models\Article::findOne($sourceId);
+        } else if ($sourceType == 'live' && Yii::$app->hasModule('live')) {
+            $source = \yuncms\live\models\Stream::findOne($sourceId);
         }//etc..
 
         if (!$source) {
@@ -108,6 +111,12 @@ class DefaultController extends Controller
             $notify_subject = $source->title;
             $notify_type = 'comment_article';
             $notify_refer_type = 'article';
+            $notify_refer_id = $source->id;
+        } else if ($sourceType == 'live' && Yii::$app->hasModule('live')) {
+            $source = \yuncms\live\models\Stream::findOne($sourceId);
+            $notify_subject = $source->title;
+            $notify_type = 'comment_live';
+            $notify_refer_type = 'live';
             $notify_refer_id = $source->id;
         }//etc..
 
