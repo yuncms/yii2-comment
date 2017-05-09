@@ -65,6 +65,8 @@ class DefaultController extends Controller
             $source = \yuncms\article\models\Article::findOne($sourceId);
         } else if ($sourceType == 'live' && Yii::$app->hasModule('live')) {
             $source = \yuncms\live\models\Stream::findOne($sourceId);
+        } else if ($sourceType == 'code' && Yii::$app->hasModule('code')) {
+            $source = \yuncms\live\models\Stream::findOne($sourceId);
         }//etc..
 
         if (!$source) {
@@ -117,6 +119,12 @@ class DefaultController extends Controller
             $notify_subject = $source->title;
             $notify_type = 'comment_live';
             $notify_refer_type = 'live';
+            $notify_refer_id = $source->id;
+        } else if ($sourceType == 'code' && Yii::$app->hasModule('code')) {
+            $source = \yuncms\code\models\Code::findOne($sourceId);
+            $notify_subject = $source->title;
+            $notify_type = 'comment_code';
+            $notify_refer_type = 'code';
             $notify_refer_id = $source->id;
         }//etc..
 
