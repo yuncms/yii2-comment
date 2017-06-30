@@ -5,18 +5,18 @@ use yii\helpers\HtmlPurifier;
 
 ?>
 <div class="media-left">
-    <a href="<?= Url::to(['/user/profile/view', 'id' => $model->user_id]) ?>" target="_blank">
+    <a href="<?= Url::to(['/user/space/view', 'id' => $model->user_id]) ?>" target="_blank">
         <img class="media-object avatar-27" alt="<?= Html::encode($model->user->username) ?>"
              src="<?= $model->user->getAvatar() ?>">
     </a>
 </div>
 <div class="media-body">
     <div class="media-heading">
-        <a href="<?= Url::to(['/user/profile/view', 'id' => $model->user_id]) ?>"
+        <a href="<?= Url::to(['/user/space/view', 'id' => $model->user_id]) ?>"
            target="_blank"><?= $model->user->username ?></a>
         <?php if ($model->to_user_id): ?>
             <span class="text-muted">回复 </span>
-            <a href="<?= Url::to(['/user/profile/show', 'id' => $model->to_user_id]) ?>"
+            <a href="<?= Url::to(['/user/space/view', 'id' => $model->to_user_id]) ?>"
                target="_blank"><?= $model->toUser->username ?></a>
         <?php endif; ?>
     </div>
