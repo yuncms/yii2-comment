@@ -134,6 +134,10 @@ class Comment extends ActiveRecord
         return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'user_id']);
     }
 
+    /**
+     * at 某人
+     * @return ActiveQuery
+     */
     public function getToUser()
     {
         return $this->hasOne(Yii::$app->user->identityClass, ['id' => 'to_user_id']);
