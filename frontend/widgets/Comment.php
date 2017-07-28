@@ -4,13 +4,13 @@
  * @copyright Copyright (c) 2012 TintSoft Technology Co. Ltd.
  * @license http://www.tintsoft.com/license/
  */
-namespace yuncms\comment\widgets;
+namespace yuncms\comment\frontend\widgets;
 
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
 use yii\base\InvalidConfigException;
-use yuncms\comment\models\CommentForm;
+use yuncms\comment\frontend\models\CommentForm;
 
 /**
  * Class Comment

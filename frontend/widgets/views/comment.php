@@ -1,8 +1,8 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yuncms\comment\widgets\Comment;
-use yuncms\comment\widgets\CommentAsset;
+use yuncms\comment\frontend\widgets\Comment;
+use yuncms\comment\frontend\widgets\assets\CommentAsset;
 
 CommentAsset::register($this);
 /** @var \yii\web\View $this */
