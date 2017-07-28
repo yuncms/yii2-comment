@@ -12,3 +12,8 @@
 
 yii message @yuncms/comment/messages/config.php
 yii message @yuncms/comment/widgets/messages/config.php
+
+## License
+
+This is released under the MIT License. See the bundled [LICENSE.md](LICENSE.md)
+for details.
