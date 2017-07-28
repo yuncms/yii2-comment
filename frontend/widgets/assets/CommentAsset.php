@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2012 TintSoft Technology Co. Ltd.
  * @license http://www.tintsoft.com/license/
  */
-namespace yuncms\comment\widgets;
+namespace yuncms\comment\frontend\widgets\assets;
 
 use yii\web\AssetBundle;
 
@@ -14,7 +14,7 @@ use yii\web\AssetBundle;
  */
 class CommentAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/yuncms/yii2-comment/assets';
+    public $sourcePath = '@yuncms/comment/frontend/widgets/views/assets';
 
     public $js = [
         'js/comment.js',

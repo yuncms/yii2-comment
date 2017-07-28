@@ -5,7 +5,7 @@
  * @license http://www.tintsoft.com/license/
  */
 
-namespace yuncms\comment\controllers;
+namespace yuncms\comment\frontend\controllers;
 
 use Yii;
 use yii\helpers\Url;
@@ -15,7 +15,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yuncms\comment\models\Comment;
-use yuncms\comment\models\CommentForm;
+use yuncms\comment\frontend\models\CommentForm;
+
 
 /**
  * Class DefaultController
@@ -144,9 +145,9 @@ class DefaultController extends Controller
             /*问题、回答、文章评论数+1*/
             $source->updateCounters(['comments' => 1]);
             if ($model->to_user_id > 0) {
-                Yii::$app->getModule('user')->notify(Yii::$app->user->id, $model->to_user_id, 'reply_comment', $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
+                notify(Yii::$app->user->id, $model->to_user_id, 'reply_comment', $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
             } else {
-                Yii::$app->getModule('user')->notify(Yii::$app->user->id, $source->user_id, $notify_type, $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
+                notify(Yii::$app->user->id, $source->user_id, $notify_type, $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
             }
             return $this->renderPartial('detail', ['model' => $model, 'source_type' => $sourceType, 'source_id' => $sourceId]);
         } else {

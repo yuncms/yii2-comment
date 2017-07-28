@@ -4,11 +4,16 @@
  * @copyright Copyright (c) 2012 TintSoft Technology Co. Ltd.
  * @license http://www.tintsoft.com/license/
  */
-namespace yuncms\comment\models;
+namespace yuncms\comment\frontend\models;
 
 use Yii;
 use yii\base\Model;
+use yuncms\comment\models\Comment;
 
+/**
+ * Class CommentForm
+ * @package yuncms\comment\frontend\models
+ */
 class CommentForm extends Model
 {
     /**
