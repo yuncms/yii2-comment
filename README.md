@@ -8,6 +8,23 @@
 [![Dependency Status](https://www.versioneye.com/php/yuncms:yii2-comment/dev-master/badge.png)](https://www.versioneye.com/php/yuncms:yii2-comment/dev-master)
 [![License](https://poser.pugx.org/yuncms/yii2-comment/license.svg)](https://packagist.org/packages/yuncms/yii2-comment)
 
+## Installation
+
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+
+```bash
+$ composer require yuncms/yii2-comment
+```
+
+or add
+
+```
+"yuncms/yii2-comment": "~2.0.0"
+```
+
+to the `require` section of your `composer.json` file.
 
 
 yii message @yuncms/comment/messages/config.php
