@@ -17,13 +17,14 @@ use yii\behaviors\AttributeBehavior;
  * Comment 评论模型
  *
  * @property integer $id
- * @property integer $user_id
+ * @property integer $user_id 用户ID
  * @property string $source_type
  * @property integer $source_id
- * @property string $content
- * @property int|null $to_user_id
- * @property integer $status
- * @property integer $created_at
+ * @property string $content 评论内容
+ * @property int|null $to_user_id @某人
+ * @property int $parent 父评论ID
+ * @property integer $status 评论状态
+ * @property integer $created_at 发表时间
  */
 class Comment extends ActiveRecord
 {
@@ -123,7 +124,6 @@ class Comment extends ActiveRecord
     {
         return (bool)$this->updateAttributes(['status' => static::STATUS_ACCEPTED]);
     }
-
 
     /**
      * 获取用户
