@@ -8,8 +8,7 @@
   "type": "yii2-extension",
   "license": "MIT",
   "require": {
-    "yiisoft/yii2": "~2.0.6",
-    "yuncms/yii2-user": "~2.0"
+    "yiisoft/yii2": "~2.0.6"
   },
   "autoload": {
     "psr-4": {
