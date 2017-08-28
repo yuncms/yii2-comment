@@ -99,32 +99,32 @@ class DefaultController extends Controller
         $source = null;
         if ($sourceType == 'question' && Yii::$app->hasModule('question')) {
             $source = \yuncms\question\models\Question::findOne($sourceId);
-            $notify_subject = $source->title;
-            $notify_type = 'comment_question';
+            $notifySubject = $source->title;
+            $notifyType = 'comment_question';
             $notify_refer_type = 'question';
             $notify_refer_id = 0;
         } else if ($sourceType === 'answer' && Yii::$app->hasModule('question')) {
             $source = \yuncms\question\models\Answer::findOne($sourceId);
-            $notify_subject = $source->question->title;
-            $notify_type = 'comment_answer';
+            $notifySubject = $source->question->title;
+            $notifyType = 'comment_answer';
             $notify_refer_type = 'answer';
             $notify_refer_id = $source->question_id;
         } else if ($sourceType == 'article' && Yii::$app->hasModule('article')) {
             $source = \yuncms\article\models\Article::findOne($sourceId);
-            $notify_subject = $source->title;
-            $notify_type = 'comment_article';
+            $notifySubject = $source->title;
+            $notifyType = 'comment_article';
             $notify_refer_type = 'article';
             $notify_refer_id = $source->id;
         } else if ($sourceType == 'live' && Yii::$app->hasModule('live')) {
             $source = \yuncms\live\models\Stream::findOne($sourceId);
-            $notify_subject = $source->title;
-            $notify_type = 'comment_live';
+            $notifySubject = $source->title;
+            $notifyType = 'comment_live';
             $notify_refer_type = 'live';
             $notify_refer_id = $source->id;
         } else if ($sourceType == 'code' && Yii::$app->hasModule('code')) {
             $source = \yuncms\code\models\Code::findOne($sourceId);
-            $notify_subject = $source->title;
-            $notify_type = 'comment_code';
+            $notifySubject = $source->title;
+            $notifyType = 'comment_code';
             $notify_refer_type = 'code';
             $notify_refer_id = $source->id;
         }//etc..
@@ -145,9 +145,9 @@ class DefaultController extends Controller
             /*问题、回答、文章评论数+1*/
             $source->updateCounters(['comments' => 1]);
             if ($model->to_user_id > 0) {
-                notify(Yii::$app->user->id, $model->to_user_id, 'reply_comment', $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
+                notify(Yii::$app->user->id, $model->to_user_id, 'reply_comment', $notifySubject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
             } else {
-                notify(Yii::$app->user->id, $source->user_id, $notify_type, $notify_subject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
+                notify(Yii::$app->user->id, $source->user_id, $notifyType, $notifySubject, $sourceId, $model->content, $notify_refer_type, $notify_refer_id);
             }
             return $this->renderPartial('detail', ['model' => $model, 'source_type' => $sourceType, 'source_id' => $sourceId]);
         } else {
