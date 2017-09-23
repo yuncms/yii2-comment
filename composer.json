@@ -22,7 +22,7 @@
         "class": "yii\\i18n\\PhpMessageSource",
         "basePath": "@yuncms/comment/message"
       },
-      "migrationNamespace": "@yuncms/comment/migrations",
+      "migrationNamespace": "yuncms/comment/migrations",
       "backend": {
         "class": "yuncms\\comment\\backend\\Module"
       },
