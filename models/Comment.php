@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\HtmlPurifier;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\BlameableBehavior;
-use yuncms\collection\ScanInterface;
+use yuncms\system\ScanInterface;
 use yuncms\system\jobs\ScanTextJob;
 use yuncms\user\models\User;
 
