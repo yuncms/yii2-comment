@@ -31,7 +31,7 @@ class CommentQuery extends ActiveQuery
      */
     public function prepare($builder)
     {
-        $this->andWhere([$this->tableName . 'source_type' => $this->type]);
+        $this->andWhere([Comment::tableName() . 'source_type' => $this->type]);
         return parent::prepare($builder);
     }
 
@@ -41,7 +41,7 @@ class CommentQuery extends ActiveQuery
      */
     public function active()
     {
-        return $this->andWhere(['status' => Comment::STATUS_ACCEPTED]);
+        return $this->andWhere(['status' => Comment::STATUS_PUBLISHED]);
     }
 
     /**
@@ -52,6 +52,6 @@ class CommentQuery extends ActiveQuery
      */
     public function source($sourceType, $sourceId)
     {
-        return $this->andWhere(['source_type' => $sourceType, 'source_id' => $sourceId]);
+        return $this->andWhere(['source_type' => $sourceType, 'source_id' => $sourceId])->active();
     }
 }

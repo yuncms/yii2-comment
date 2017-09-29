@@ -18,13 +18,20 @@ class M161114065507Create_comment_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'to_user_id' => $this->integer()->comment('at某人的时候本字段不为空'),
             'source_id' => $this->integer()->notNull(),
-            'source_type'=> $this->string()->notNull(),
+            'source_type' => $this->string(100)->notNull(),
             'parent' => $this->integer(),
             'content' => $this->text()->notNull(),
-            'status' => $this->boolean()->notNull()->defaultValue(false),
-            'created_at' => $this->integer()->notNull(),
+            'status' => $this->smallInteger(1)->unsigned()->notNull()->defaultValue(0),
+            'created_at' => $this->integer()->notNull()->unsigned(),
         ], $tableOptions);
         $this->addForeignKey('comment_ibfk_1', '{{%comment}}', 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->addForeignKey('comment_ibfk_1', '{{%comment}}', 'to_user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->addForeignKey('comment_ibfk_2', '{{%comment}}', 'parent', '{{%comment}}', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('comment_status', '{{%comment}}', ['status']);
+        $this->createIndex('comment_sid_smodel', '{{%comment}}', ['source_id', 'source_type']);
+
     }
 
     public function down()
