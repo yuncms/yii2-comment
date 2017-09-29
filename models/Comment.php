@@ -90,8 +90,8 @@ class Comment extends ActiveRecord implements ScanInterface
     {
         $scenarios = parent::scenarios();
         return ArrayHelper::merge($scenarios, [
-            static::SCENARIO_CREATE => ['source_id', 'source_type', 'content'],
-            static::SCENARIO_UPDATE => ['source_id', 'source_type', 'content'],
+            static::SCENARIO_CREATE => ['source_id','content'],
+            static::SCENARIO_UPDATE => ['source_id','content'],
         ]);
     }
 
@@ -101,8 +101,8 @@ class Comment extends ActiveRecord implements ScanInterface
     public function rules()
     {
         return [
-            [['source_id', 'source_type', 'content'], 'required'],
-            [['source_type', 'content'], 'filter', 'filter' => 'trim'],
+            [['source_id', 'content'], 'required'],
+            [['content'], 'filter', 'filter' => 'trim'],
             ['content', 'validateContent'],
             ['status', 'default', 'value' => self::STATUS_DRAFT],
             ['status', 'in', 'range' => [
