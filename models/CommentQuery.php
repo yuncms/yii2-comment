@@ -31,7 +31,7 @@ class CommentQuery extends ActiveQuery
      */
     public function prepare($builder)
     {
-        $this->andWhere([$this - $this->tableName . 'source_type' => $this->source_type]);
+        $this->andWhere([$this->tableName . '.source_type' => $this->source_type]);
         return parent::prepare($builder);
     }
 
