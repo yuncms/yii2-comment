@@ -18,7 +18,7 @@ class CommentQuery extends ActiveQuery
     /**
      * @var string 模型类型
      */
-    public $type;
+    public $source_type;
 
     /**
      * @var string 数据表名称
@@ -31,7 +31,7 @@ class CommentQuery extends ActiveQuery
      */
     public function prepare($builder)
     {
-        $this->andWhere([Comment::tableName() . 'source_type' => $this->type]);
+        $this->andWhere([$this - $this->tableName . 'source_type' => $this->source_type]);
         return parent::prepare($builder);
     }
 
@@ -49,6 +49,7 @@ class CommentQuery extends ActiveQuery
      * @param string $sourceType
      * @param int $sourceId
      * @return $this
+     * @deprecated 过期了
      */
     public function source($sourceType, $sourceId)
     {
