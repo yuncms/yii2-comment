@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2012 TintSoft Technology Co. Ltd.
  * @license http://www.tintsoft.com/license/
  */
+
 namespace yuncms\comment\models;
 
 use yii\db\ActiveQuery;
@@ -14,6 +15,26 @@ use yii\db\ActiveQuery;
  */
 class CommentQuery extends ActiveQuery
 {
+    /**
+     * @var string 模型类型
+     */
+    public $type;
+
+    /**
+     * @var string 数据表名称
+     */
+    public $tableName;
+
+    /**
+     * @param \yii\db\QueryBuilder $builder
+     * @return $this|\yii\db\Query
+     */
+    public function prepare($builder)
+    {
+        $this->andWhere([$this->tableName . 'source_type' => $this->type]);
+        return parent::prepare($builder);
+    }
+
     /**
      * 设置查询条件
      * @return $this
