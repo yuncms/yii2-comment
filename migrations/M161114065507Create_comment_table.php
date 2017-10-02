@@ -26,9 +26,9 @@ class M161114065507Create_comment_table extends Migration
         ], $tableOptions);
         $this->addForeignKey('comment_ibfk_1', '{{%comment}}', 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
 
-        $this->addForeignKey('comment_ibfk_1', '{{%comment}}', 'to_user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('comment_ibfk_2', '{{%comment}}', 'to_user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
 
-        $this->addForeignKey('comment_ibfk_2', '{{%comment}}', 'parent', '{{%comment}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('comment_ibfk_3', '{{%comment}}', 'parent', '{{%comment}}', 'id', 'CASCADE', 'CASCADE');
         $this->createIndex('comment_status', '{{%comment}}', ['status']);
         $this->createIndex('comment_sid_smodel', '{{%comment}}', ['source_id', 'source_type']);
 
