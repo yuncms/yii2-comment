@@ -15,8 +15,8 @@ class M161114065507Create_comment_table extends Migration
         }
         $this->createTable('{{%comment}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull(),
-            'to_user_id' => $this->integer()->comment('at某人的时候本字段不为空'),
+            'user_id' => $this->integer()->unsigned()->notNull(),
+            'to_user_id' => $this->integer()->unsigned()->comment('at某人的时候本字段不为空'),
             'source_id' => $this->integer()->notNull(),
             'source_type' => $this->string(100)->notNull(),
             'parent' => $this->integer(),
